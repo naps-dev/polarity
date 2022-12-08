@@ -18,6 +18,16 @@ spec:
         component: polarity
         app: polarity-server
     spec:
+      initContainers:
+        {{- range .Values.polarityServer.integrations }}
+        - name: {{ .name }}-integration
+          image: busybox:1.28
+          command: ["sh"]
+          args: ["-c", "wget -O tmp.tgz {{ .source }} && tar -xvzf tmp.tgz -C /integrations && exit 0"]
+          volumeMounts:
+            - name: polarity-server-integrations
+              mountPath: /integrations
+        {{- end }}
       containers:
         - image: {{ .Values.polarityServer.image }}
           name: polarity-server
@@ -64,8 +74,9 @@ spec:
       restartPolicy: Always
       volumes:
         - name: polarity-server-integrations
-          persistentVolumeClaim:
-            claimName: polarity-server-integrations
+          emptyDir: {}
+        #   persistentVolumeClaim:
+        #     claimName: polarity-server-integrations
         - name: polarity-server-tmp
           emptyDir: {}
         - name: polarity-server-env

@@ -167,3 +167,10 @@ polarityServer:
   certs:
     crtPath: configs/polarity/certs/server.crt
     keyPath: configs/polarity/certs/server.key
+
+  integrations: 
+    - name: elasticsearch
+      source: https://github.com/polarityio/elasticsearch/releases/download/3.5.0/elasticsearch-3.5.0.tgz
+
+polarityWeb:
+  image: 765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-web:4.0.2
