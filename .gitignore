@@ -1,0 +1,11 @@
+# Ignore Files
+
+# testing
+testing/*
+
+# .lic
+*.lic
+
+# certs
+*.crt
+*.key
