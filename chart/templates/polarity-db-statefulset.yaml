@@ -26,7 +26,7 @@ spec:
       containers:
         - name: polarity-db
           image: {{ .Values.polarityDb.image }}
-          imagePullPolicy: "Always"
+          imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsUser: {{ .Values.polarityDb.user }}
           env:
