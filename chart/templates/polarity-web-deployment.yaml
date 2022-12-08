@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polarity-web
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    component: polarity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: polarity-web
+  template:
+    metadata:
+      labels:
+        component: polarity
+        app: polarity-web
+    spec:
+      containers:
+        - image: {{ .Values.polarityWeb.image }}
+          name: polarity-web
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          volumeMounts:
+            - name: polarity-server-cert
+              mountPath: /etc/nginx/certs/server.crt
+              subPath: server.crt
+            - name: polarity-server-key
+              mountPath: /etc/nginx/certs/server.key
+              subPath: server.key
+      imagePullSecrets:
+        - name: regcred  
+      restartPolicy: Always
+      volumes:
+        - name: polarity-server-cert
+          secret:
+            secretName: polarity-server-cert
+        - name: polarity-server-key
+          secret:
+            secretName: polarity-server-key
