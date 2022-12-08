@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: polarity-server-cert
+  namespace: {{ .Values.namespace }}
+type: Opaque
+stringData:
+  server.crt: |
+{{ .Files.Get .Values.polarityServer.certs.crtPath | indent 4 }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: polarity-server-key
+  namespace: {{ .Values.namespace }}
+type: Opaque
+stringData:
+  server.key: |
+{{ .Files.Get .Values.polarityServer.certs.keyPath | indent 4 }}

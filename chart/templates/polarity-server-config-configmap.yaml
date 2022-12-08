@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: polarity-server-config
+  namespace: {{ .Values.namespace }}
+data:
+  config.js: |
+    'use strict';
+    module.exports = {
+      websocket: {
+        address: '0.0.0.0'
+      },
+      authentication: {
+        tlsOptions: {
+          rejectUnauthorized: false,
+          secureProtocol: 'TLSv1_2_method'
+        }
+      },
+      polarity: {
+        postgres: {
+        },
+        integrations: {
+          path: 'integrations',
+          cache: {
+            redis: {
+              host: '{{ .Values.redisIntegration.fullnameOverride }}-master',
+              port: {{ .Values.redisIntegration.master.service.ports.redis }},
+              db: 0
+            }
+          },
+          secretKey: '{{ randAlphaNum 128 }}'
+        },
+        settings: {
+          isSSLEnabled: true,
+          logResponsePayload: false,
+          maxNumberOfContextsForBulkTagging: 2000,
+          userStatisticsRefreshIntervalCron: '0 * * * *',
+          fullyQualifiedDomainName: 'localhost.localdomain'
+        }
+      },
+      mailer: {
+        enabled: false,
+        smtp: {
+          user: '',
+          password: '',
+          fromAddress: 'notifications@your.polarity-server.com',
+          host: '',
+          port: 2525,
+          ssl: false,
+          tls: true
+        }
+      },
+      pufferfish: {
+        filterCachePath: '/tmp/',
+        redisStateStore: {
+          host: '{{ .Values.redisSession.fullnameOverride }}-master',
+          port: {{ .Values.redisSession.master.service.ports.redis }},
+          db: 2
+        }
+      },
+      rest: {
+        fullyQualifiedDomainName: 'localhost.localdomain',
+        credentials: {
+          enabled: true,
+          key: '/etc/pki/tls/private/server.key',
+          certificate: '/etc/pki/tls/certs/server.crt'
+        },
+        basicAuth: {
+          user: 'admin',
+          password: 'Co3pMzVFqR4H3hT39sHu',
+          protectedModes: ['production'],
+          enabled: true,
+          ignorePaths: ['/v1', '/v2']
+        },
+        maxJsonRequestSize: '25mb',
+        localhostOnly: false,
+        port: 5555,
+        hostStaticContent: false,
+        authenticationIgnorePaths: [
+          '/v1/authenticate',
+          '/v1/invalidate',
+          '/v1/authenticate/authenticated',
+          '/v2/servers',
+          '/v1/authenticate/forgot',
+          '/v1/authenticate/reset/(0|[1-9][0-9]*):[a-zA-Z0-9]{64}',
+          '/v1/users/(0|[1-9][0-9]*)/reset-password',
+          '/v2/authenticate',
+          '/v2/saml',
+          '/v2/saml/assertion',
+          '/v2/slo'
+        ],
+        accessControlAllowOrigins: [],
+        redisSessionStore: {
+          secretKey: '{{ randAlphaNum 128 }}',
+          host: '{{ .Values.redisSession.fullnameOverride }}-master',
+          port: {{ .Values.redisSession.master.service.ports.redis }},
+          db: 1,
+          ttl: 2592000
+        }
+      }
+    };

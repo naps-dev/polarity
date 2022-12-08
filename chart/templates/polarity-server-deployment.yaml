@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polarity-server
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    component: polarity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: polarity-server
+  template:
+    metadata:
+      labels:
+        component: polarity
+        app: polarity-server
+    spec:
+      containers:
+        - image: {{ .Values.polarityServer.image }}
+          name: polarity-server
+          command: ["/bin/sh"]
+          args: ["-c", "export $(grep -v '^#' .env | xargs) && ./wait-for.sh {{ .Values.polarityDb.fullnameOverride }}:5432 && npm run migrations:run && npm run start"]
+          # args: ["-c", "export $(grep -v '^#' .env | xargs) && ./wait-for.sh {{ .Values.polarityDb.fullnameOverride }}:5432 && sleep infinity"]
+          # args: ["-c", "./wait-for.sh {{ .Values.polarityDb.fullnameOverride }}:5432 && npm run migrations:run && npm run start"]
+          # args: ["-c", "env | grep POLARITY && npm run start"]
+          # args: ["-c", "sleep infinity"]
+          # args: ["-c", "env | grep POLARITY_DB_PORT"]
+          # Env var tests:
+          # envFrom:
+          #   - configMapRef:
+          #       name: polarity-server-env
+          # env:
+          #   - name: POLARITY_DB_PORT
+          #     value: "1234"
+          ports:
+            - containerPort: 5555
+            - containerPort: 7777
+          volumeMounts:
+            - name: polarity-server-integrations
+              mountPath: /app/polarity-server/integrations
+            - name: polarity-server-tmp
+              mountPath: /tmp
+            - name: polarity-server-env
+              mountPath: /app/polarity-server/.env
+              subPath: .env
+            - name: polarity-server-config
+              mountPath: /app/polarity-server/config/config.js
+              subPath: config.js
+            - name: polarity-server-lic
+              mountPath: /app/polarity-server/license/polarity.lic
+              subPath: polarity.lic
+            - name: polarity-server-cert
+              mountPath: /etc/pki/tls/certs/server.crt
+              subPath: server.crt
+            - name: polarity-server-key
+              mountPath: /etc/pki/tls/private/server.key
+              subPath: server.key
+      imagePullSecrets:
+        - name: regcred  
+      restartPolicy: Always
+      volumes:
+        - name: polarity-server-integrations
+          persistentVolumeClaim:
+            claimName: polarity-server-integrations
+        - name: polarity-server-tmp
+          emptyDir: {}
+        - name: polarity-server-env
+          configMap:
+            name: polarity-server-env
+        - name: polarity-server-config
+          configMap:
+            name: polarity-server-config
+        - name: polarity-server-lic
+          secret:
+            secretName: polarity-server-lic
+            defaultMode: 0400
+        - name: polarity-server-cert
+          secret:
+            secretName: polarity-server-cert
+        - name: polarity-server-key
+          secret:
+            secretName: polarity-server-key

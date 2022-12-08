@@ -1,0 +1,169 @@
+namespace: polarity
+
+redisSession: 
+  fullnameOverride: session-cache
+
+  # image:
+  #   registry: docker.io #765814079306.dkr.ecr.us-east-1.amazonaws.com
+  #   repository: bitnami/redis #redis
+  #   tag: 6.0.5-alpine
+
+  # existingConfigmap: session-cache
+
+  auth:
+    enabled: false
+
+  master: 
+    disableCommands: []
+    containerSecurityContext:
+      runAsUser: 10001
+    # containerPorts:
+    #   redis: 6379
+    service:
+      ports:
+        redis: 6379
+
+  replica:
+    disableCommands: []
+    replicaCount: 1
+    containerSecurityContext:
+      runAsUser: 10001
+    # containerPorts:
+    #   redis: 6379
+    service:
+      ports:
+        redis: 6379
+
+redisIntegration: 
+  fullnameOverride: integration-cache
+  
+  # image:
+  #   registry: 765814079306.dkr.ecr.us-east-1.amazonaws.com
+  #   repository: redis
+  #   tag: 6.0.5
+
+  # existingConfigmap: integration-cache
+
+  auth:
+    enabled: false
+
+  master: 
+    disableCommands: []
+    containerSecurityContext:
+      runAsUser: 10001
+    # containerPorts:
+    #   redis: 7379
+    service:
+      ports:
+        redis: 7379
+
+  replica:
+    disableCommands: []
+    replicaCount: 1
+    containerSecurityContext:
+      runAsUser: 10001
+    # containerPorts:
+    #   redis: 7379
+    service:
+      ports:
+        redis: 7379
+
+redisMetrics: 
+  fullnameOverride: metrics-cache
+  
+  # image:
+  #   registry: 765814079306.dkr.ecr.us-east-1.amazonaws.com
+  #   repository: redis
+  #   tag: 6.0.5-alpine
+
+  #existingConfigmap: metrics-cache
+
+  auth:
+    enabled: false
+
+  master: 
+    disableCommands: []
+    containerSecurityContext:
+      runAsUser: 10001
+    # containerPorts:
+    #   redis: 8379
+    service:
+      ports:
+        redis: 8379
+
+  replica:
+    disableCommands: []
+    replicaCount: 1
+    containerSecurityContext:
+      runAsUser: 10001
+    # containerPorts:
+    #   redis: 8379
+    service:
+      ports:
+        redis: 8379
+
+redisPg: 
+  fullnameOverride: pg-cache
+  
+  # image:
+  #   registry: 765814079306.dkr.ecr.us-east-1.amazonaws.com
+  #   repository: redis
+  #   tag: 6.0.5-alpine
+
+  # existingConfigmap: pg-cache
+
+  auth:
+    enabled: false
+
+  master: 
+    disableCommands: []
+    containerSecurityContext:
+      runAsUser: 10001
+    # containerPorts:
+    #   redis: 9379
+    service:
+      ports:
+        redis: 9379
+
+  replica:
+    disableCommands: []
+    replicaCount: 1
+    containerSecurityContext:
+      runAsUser: 10001
+    # containerPorts:
+    #   redis: 9379
+    service:
+      ports:
+        redis: 9379
+
+# polarityDb:
+#   fullnameOverride: polarity-db
+
+#   global:
+#     postgresql:
+#       auth:
+#         postgresPassword: "polarity"
+#         database: "polarity"
+
+polarityDb:
+  fullnameOverride: polarity-db
+
+  port: 5432
+
+  global:
+    postgresql:
+      postgresqlDatabase: "polarity"
+      postgresqlUsername: "postgres"
+      postgresqlPassword: "polarity"
+
+  image: 765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-db:latest
+  user: 999
+
+polarityServer:
+  image: 765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-server:4.0.10
+  
+  licensePath: configs/polarity/polarity.lic
+
+  certs:
+    crtPath: configs/polarity/certs/server.crt
+    keyPath: configs/polarity/certs/server.key

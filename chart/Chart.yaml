@@ -1,0 +1,21 @@
+name: polarity
+description: Helm Chart for the Polarity Platform
+version: 0.0.1
+apiVersion: v1
+dependencies:
+  - name: redis
+    version: "17.3.13"
+    repository: "https://charts.bitnami.com/bitnami"
+    alias: redisSession
+  - name: redis
+    version: "17.3.13"
+    repository: https://charts.bitnami.com/bitnami
+    alias: redisIntegration
+  - name: redis
+    version: "17.3.13"
+    repository: https://charts.bitnami.com/bitnami
+    alias: redisMetrics
+  - name: redis
+    version: "17.3.13"
+    repository: https://charts.bitnami.com/bitnami
+    alias: redisPg

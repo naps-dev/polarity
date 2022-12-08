@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: polarity-server-env
+  namespace: {{ .Values.namespace }}
+data:
+  .env: |
+    # The following environment variables are automatically loaded by the Polarity Server when it starts
+    ##################################
+    # Location of the Polarity Server's configuration file
+    # Default: /app/polarity-server/config/config.js
+    POLARITY_SERVER_CONF_FILE=/app/polarity-server/config/config.js
+
+    # The public GPG key used to verify the server's license
+    # Default: /app/polarity-server/.gpg/GPG-KEY-polarityio-primary
+    POLARITY_PUBLIC_LICENSE_KEY=/app/polarity-server/.gpg/GPG-KEY-polarityio-primary
+
+    # The path to the Polarity license file
+    # Default: /app/polarity-server/license/polarity.lic
+    POLARITY_LICENSE=/app/polarity-server/license/polarity.lic
+
+    # The location where the Polarity Server log file will be written out to
+    # Default: /app/polarity-server/logs/polarity-server.log
+    POLARITY_LOG_FILE=/app/polarity-server/logs/polarity-server.log
+
+    # If set to true, Polarity will collect metrics on which users have viewed annotated entities.
+    # Valid values: true, false
+    # Default: true
+    POLARITY_USER_METRICS_COLLECTION=true
+
+    # The default Polarity Server logging level
+    # Valid Values: error, warn, info, debug, trace
+    # Default: info
+    POLARITY_LOG_LEVEL=info
+
+    # If set to true, Polarity will log all HTTP Requests to the server.
+    # Valid values: true, false
+    # Default: true
+    POLARITY_LOG_REQUESTS=true
+
+    # If set to true, Polarity will log user session information as part of the request logging.
+    # The `POLARITY_LOG_REQUESTS` property must also be set to true for this property to have an effect
+    # Valid values: true, false
+    # Default: false
+    POLARITY_LOG_REQUEST_SESSION=false
+
+    # If set to true, Polarity will log all HTTP Request body (i.e., payload) information.
+    # Note that setting this value to true will log entities on users' screens and will greatly increase
+    # the size of the log files collected.
+    # The `POLARITY_LOG_REQUESTS` property must also be set to true for this property to have an effect
+    # Valid values: true, false
+    # Default: false
+    POLARITY_LOG_REQUEST_BODY=false
+
+    # If set to true, server logs will be sent to the location specified by
+    # the POLARITY_LOG_FILE environment variable.  If set to true when using docker
+    # be sure to mount POLARITY_LOG_FILE as a volume on the host if this value is set to true.
+    POLARITY_LOG_ENABLE_FILE=false
+
+    # If set to true, server logs are sent to stdout where they can be viewed using the command
+    # `docker logs polarity-server`
+    POLARITY_LOG_ENABLE_STDOUT=true
+
+    # The mode that the server should be running in.
+    # Valid values: production,development
+    # Default: production
+    NODE_ENV=production
+
+    POLARITY_DB_SUPERUSER_USER=postgres
+    POLARITY_DB_SUPERUSER_PASSWORD={{ .Values.polarityDb.global.postgresql.postgresqlPassword }}
+    POLARITY_DB_DATABASE={{ .Values.polarityDb.global.postgresql.postgresqlDatabase }}
+    POLARITY_DB_PORT=5432
+    POLARITY_DB_USER=polarity
+    POLARITY_DB_PASSWORD=polarity
+    POLARITY_DB_HOST={{ .Values.polarityDb.fullnameOverride }}
+    POLARITY_DB_SCHEMA=polarity
+    POLARITY_DB_CONNECTION_POOL_SIZE=200
+
+    POLARITY_METRICS_COLLECTION=true
+    POLARITY_METRICS_REDIS_HOST={{ .Values.redisMetrics.fullnameOverride }}-master
+    POLARITY_METRICS_REDIS_PORT={{ .Values.redisMetrics.master.service.ports.redis }}
+    POLARITY_METRICS_REDIS_DB=1
+
+    POLARITY_INTEGRATION_CACHE_HOST={{ .Values.redisIntegration.fullnameOverride }}-master
+    POLARITY_INTEGRATION_CACHE_PORT={{ .Values.redisIntegration.master.service.ports.redis }}
+    POLARITY_INTEGRATION_CACHE_DB=0
+
+    POLARITY_PG_CACHE_HOST={{ .Values.redisPg.fullnameOverride }}-master
+    POLARITY_PG_CACHE_PORT={{ .Values.redisPg.master.service.ports.redis }}
+    POLARITY_PG_CACHE_DB=0
+    POLARITY_PG_CACHE_MAX_MEMORY=0.1
+
+    POLARITY_SESSION_CACHE_HOST={{ .Values.redisSession.fullnameOverride }}-master
+    POLARITY_SESSION_CACHE_PORT={{ .Values.redisSession.master.service.ports.redis }}
+    POLARITY_SESSION_CACHE_DB=1
+    POLARITY_SESSION_CACHE_TTL=43200
+    POLARITY_STATE_STORE_DB=2
+
+    POLARITY_INITIALIZE_REDIS_CONFIGS_ON_START=false
