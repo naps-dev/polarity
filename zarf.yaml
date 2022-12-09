@@ -39,5 +39,5 @@ components:
       - "765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-db:latest"
       - "765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-server:4.0.10"
       - "765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-web:4.0.2"
-      - "registry.hub.docker.com/bitnami/redis:7.0.5-debian-11-r15"
-      - "registry.hub.docker.com/library/busybox:1.28"
+      - "docker.io/bitnami/redis:7.0.5-debian-11-r15"
+      - "busybox:1.28"
