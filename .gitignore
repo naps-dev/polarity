@@ -9,3 +9,6 @@ testing/*
 # certs
 *.crt
 *.key
+
+# zarf
+*.zst
