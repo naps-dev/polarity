@@ -1,7 +1,12 @@
 # Polarity
 
-This repo contains the polarity helm chart, and hopefully some other stuff.
+This repo contains the polarity helm chart, zarf yaml, and github actions to build zartifact.
 
-To run, run the ./deploy-all.sh
+Before running the zartifact, create a Polarity license secret:
 
-Note, the chart assumes you have credentials to AWS, as that's where the images are sourced. It also requires a few other env variables be set: AWS_ACCOUNT and AWS_REGION.
+```
+kubectl create secret generic polarity-server-lic \
+  --from-file=polarity.lic=<path-to-polarity.lic> \
+  --namespace=polarity
+```
+Note - "polarity-server-lic" string can be configured in the chart's values.yaml

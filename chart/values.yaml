@@ -136,15 +136,6 @@ redisPg:
       ports:
         redis: 9379
 
-# polarityDb:
-#   fullnameOverride: polarity-db
-
-#   global:
-#     postgresql:
-#       auth:
-#         postgresPassword: "polarity"
-#         database: "polarity"
-
 polarityDb:
   fullnameOverride: polarity-db
 
@@ -162,7 +153,8 @@ polarityDb:
 polarityServer:
   image: 765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-server:4.0.10
   
-  licensePath: configs/polarity/polarity.lic
+  # licensePath: configs/polarity/polarity.lic
+  licenseSecret: polarity-server-lic
 
   certs:
     crtPath: configs/polarity/certs/server.crt

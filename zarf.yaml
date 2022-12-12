@@ -1,0 +1,43 @@
+kind: ZarfPackageConfig
+metadata:
+  name: polarity
+  description: "Deploys Polarity Platform tool"
+  # architecture: amd64
+  architecture: arm64
+
+variables:
+  - name: BRANCH
+    default: "main"
+    prompt: true
+
+  - name: INTERFACE
+    default: "eth0"
+    prompt: false
+
+  - name: NODE_LABEL
+    default: "kubernetes.io/os"
+    prompt: false
+
+  - name: NODE_LABEL_VALUE
+    default: "linux"
+    prompt: false
+
+components:
+  - name: polarity
+    description: "Polarity Platform"
+    required: true
+    repos:
+      - https://github.com/naps-dev/polarity.git
+    manifests:
+      - name: polarity-helm
+        namespace: polarity
+        files:
+          - manifests/namespace.yaml
+          - manifests/gitrepository.yaml
+          - manifests/helmrelease.yaml
+    images:
+      - "765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-db:latest"
+      - "765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-server:4.0.10"
+      - "765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-web:4.0.2"
+      - "docker.io/bitnami/redis:7.0.5-debian-11-r15"
+      - "busybox:1.28"
