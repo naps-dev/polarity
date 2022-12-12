@@ -7,3 +7,9 @@ kubectl create secret docker-registry regcred \
   --namespace=polarity
 
 helm install polarity ./chart -n polarity --create-namespace
+
+### Zarf stuff
+flux create secret git polarity-auth \
+  --url=ssh://git@github.com/naps-dev/polarity \
+  --private-key-file=${HOME}/.ssh/id_rsa \
+  --namespace=polarity

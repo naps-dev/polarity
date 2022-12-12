@@ -5,6 +5,8 @@ metadata:
   namespace: polarity
 spec:
   interval: 1m
-  url: https://github.com/naps-dev/polarity.git
+  url: ssh://git@github.com/naps-dev/polarity
   ref:
     branch: "###ZARF_VAR_BRANCH###"
+  secretRef:
+    name: polarity-auth
