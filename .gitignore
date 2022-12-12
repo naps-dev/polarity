@@ -6,9 +6,9 @@ testing/*
 # .lic
 *.lic
 
-# certs
-*.crt
-*.key
+# certs - not sensitive, dev ones only
+# *.crt
+# *.key
 
 # zarf
 *.zst
