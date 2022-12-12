@@ -12,3 +12,4 @@ testing/*
 
 # zarf
 *.zst
+zarf-sbom/*
