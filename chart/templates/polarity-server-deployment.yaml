@@ -87,7 +87,7 @@ spec:
             name: polarity-server-config
         - name: polarity-server-lic
           secret:
-            secretName: polarity-server-lic
+            secretName: {{ .Values.polarityServer.licenseSecret }}
             defaultMode: 0400
         - name: polarity-server-cert
           secret:
