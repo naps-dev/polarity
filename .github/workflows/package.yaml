@@ -25,6 +25,17 @@ jobs:
         with:
           version: v0.22.2
 
+      - name: Configure AWS ECR Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{secrets.AWS_ECR_ROLE}}
+          role-session-name: polarity-ecr
+          aws-region: us-east-1
+
+      - name: ECR Login
+        uses: aws-actions/amazon-ecr-login@v1
+        id: login-ecr
+
       - name: Create Zarf Package
         run: |
           if [ -d "./tmp" ]; then
@@ -37,6 +48,7 @@ jobs:
             --tmpdir $PWD/tmp \
             --skip-sbom
           rm -rf ./tmp
+          
       - name: Configure AWS S3 Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
