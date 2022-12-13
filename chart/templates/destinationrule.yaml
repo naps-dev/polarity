@@ -2,9 +2,10 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: {{ include "polarity.fullname" . }}
+  name: polarity
+  namespace: {{ .Values.namespace }}
 spec:
-  host: {{ include "polarity.fullname" . }}
+  host: polarity-web
   trafficPolicy:
     tls:
       mode: SIMPLE

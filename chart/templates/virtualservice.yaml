@@ -12,7 +12,7 @@ spec:
   http:
     - route:
         - destination:
-            host: "{{ include "polarity.fullname" . }}"
+            host: polarity-web
             port:
               number: 443
 {{- end}}
