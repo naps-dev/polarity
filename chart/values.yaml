@@ -151,7 +151,7 @@ polarityDb:
       postgresqlUsername: "postgres"
       postgresqlPassword: "polarity"
 
-  image: 765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-db:latest
+  image: 765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-db:20221213
   user: 999
 
 polarityServer:
