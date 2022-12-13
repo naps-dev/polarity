@@ -1,0 +1,11 @@
+{{- if .Values.istioEnabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ include "polarity.fullname" . }}
+spec:
+  host: {{ include "polarity.fullname" . }}
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+{{- end}}

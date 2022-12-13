@@ -1,4 +1,8 @@
+nameOverride: ""
+fullnameOverride: "polarity"
 namespace: polarity
+domain: example.com
+istioEnabled: true
 
 redisSession: 
   fullnameOverride: session-cache

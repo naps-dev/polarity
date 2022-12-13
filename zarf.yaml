@@ -10,16 +10,8 @@ variables:
     default: "main"
     prompt: true
 
-  - name: INTERFACE
-    default: "eth0"
-    prompt: false
-
-  - name: NODE_LABEL
-    default: "kubernetes.io/os"
-    prompt: false
-
-  - name: NODE_LABEL_VALUE
-    default: "linux"
+  - name: DOMAIN
+    default: "vp-stg.bigbang.dev"
     prompt: false
 
 components:
