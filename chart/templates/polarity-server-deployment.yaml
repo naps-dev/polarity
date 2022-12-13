@@ -74,9 +74,8 @@ spec:
       restartPolicy: Always
       volumes:
         - name: polarity-server-integrations
-          emptyDir: {}
-        #   persistentVolumeClaim:
-        #     claimName: polarity-server-integrations
+          persistentVolumeClaim:
+            claimName: polarity-server-integrations
         - name: polarity-server-tmp
           emptyDir: {}
         - name: polarity-server-env
