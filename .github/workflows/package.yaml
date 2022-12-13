@@ -1,0 +1,49 @@
+name: Package Polarity
+run-name: ${{github.actor}} is building the Polarity Zarf Package
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main]
+permissions:
+  id-token: write
+  contents: read
+env:
+  S3_PATH: "s3://${{ secrets.AWS_BUCKET }}/${{ github.repository }}/${{ github.head_ref || github.ref_name }}"
+  BRANCH_NAME: "${{ github.head_ref || github.ref_name }}"
+  ZARF_PACKAGE: zarf-package-polarity-amd64.tar.zst
+jobs:
+  package-create:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Zarf
+        uses: defenseunicorns/setup-zarf@main
+        with:
+          version: v0.22.2
+
+      - name: Create Zarf Package
+        run: |
+          if [ -d "./tmp" ]; then
+            rm -rf ./tmp
+          fi
+          mkdir tmp
+          zarf package create \
+            --set BRANCH="${{ env.BRANCH_NAME }}" \
+            --confirm \
+            --tmpdir $PWD/tmp \
+            --skip-sbom
+          rm -rf ./tmp
+      - name: Configure AWS S3 Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{secrets.AWS_ROLE}}
+          role-session-name: polarity-s3
+          aws-region: us-east-1
+
+      - name: Publish to S3
+        run: |
+          aws s3 cp --no-progress "${{ env.ZARF_PACKAGE }}" "${{ env.S3_PATH }}/${{ env.ZARF_PACKAGE }}"
