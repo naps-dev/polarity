@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: polarity
   labels:
-    istio-injection: disabled # temp until cert thing is worked out...?
+    istio-injection: disabled
