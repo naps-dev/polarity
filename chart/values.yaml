@@ -143,16 +143,17 @@ redisPg:
 polarityDb:
   fullnameOverride: polarity-db
 
-  port: 5432
-
   global:
     postgresql:
-      postgresqlDatabase: "polarity"
-      postgresqlUsername: "postgres"
-      postgresqlPassword: "polarity"
+      auth: 
+        database: "polarity"
+        postgresPassword: "polarity"
 
-  image: 765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-db:20221213
-  user: 999
+  image:
+    registry: 765814079306.dkr.ecr.us-east-1.amazonaws.com
+    repository: polarity-db
+    tag: 13.1.0-ip4r
+
 
 polarityServer:
   image: 765814079306.dkr.ecr.us-east-1.amazonaws.com/polarity-server:4.0.10
