@@ -150,7 +150,7 @@ polarityDb:
         postgresPassword: "polarity"
 
   image:
-    # registry: 765814079306.dkr.ecr.us-east-1.amazonaws.com
+    registry: 765814079306.dkr.ecr.us-east-1.amazonaws.com
     repository: polarity-db
     tag: 13.1.0-ip4r
 
