@@ -67,8 +67,8 @@ data:
     NODE_ENV=production
 
     POLARITY_DB_SUPERUSER_USER=postgres
-    POLARITY_DB_SUPERUSER_PASSWORD={{ .Values.polarityDb.global.postgresql.postgresqlPassword }}
-    POLARITY_DB_DATABASE={{ .Values.polarityDb.global.postgresql.postgresqlDatabase }}
+    POLARITY_DB_SUPERUSER_PASSWORD={{ .Values.polarityDb.global.postgresql.auth.postgresPassword }}
+    POLARITY_DB_DATABASE={{ .Values.polarityDb.global.postgresql.auth.database }}
     POLARITY_DB_PORT=5432
     POLARITY_DB_USER=polarity
     POLARITY_DB_PASSWORD=polarity
